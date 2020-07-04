@@ -1,0 +1,26 @@
+version: '3'
+
+services: 
+  project-api:
+    build: ./project-api
+    container_name: project-api
+    command: sh -c "npm install && npm run dev"
+    ports: 
+      - "3001:3001"
+    volumes: 
+      - ./project-api:/app
+    env_file: 
+      - ./envs/.env.db-api
+
+  project-client:
+    build: ./project-client
+    container_name: project-client
+    ports:
+      - "3000:3000"
+    command: sh -c "yarn && yarn dev"
+    working_dir: /app
+    volumes:
+      - ./project-client:/app
+    environment:
+      NODE_ENV: "local" 
+      HOST: "0.0.0.0"
